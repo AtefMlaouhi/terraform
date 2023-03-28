@@ -43,32 +43,3 @@ locals {
     })
   )
 }
-
-# resource "kubernetes_secret_v1" "argocd-dotnet-registry" {
-#   for_each = toset(
-#     concat(
-#       yamldecode(file("/home/vince/src/harvest/Quantalys/CICD/argocd-dotnet/quantalys.customer/init-namespace/values-dev.yaml"))["namespaces"],
-#       yamldecode(file("/home/vince/src/harvest/Quantalys/CICD/argocd-dotnet/quantalys.customer/init-namespace/values-rci.yaml"))["namespaces"]
-#     )
-#   )
-#   metadata {
-#     name      = "gitlab"
-#     namespace = each.value
-#   }
-
-#   data = {
-#     ".dockerconfigjson" = jsonencode(
-#       {
-#         auths = {
-#           "registry-git.harvest.fr" = {
-#             "username" : "${gitlab_deploy_token.argocd-dotnet-registry-readonly.username}"
-#             "password" : "${gitlab_deploy_token.argocd-dotnet-registry-readonly.token}"
-#             "email" : "a@a.com"
-#           "auth" : "${base64encode(format("%s:%s", gitlab_deploy_token.argocd-dotnet-registry-readonly.username, gitlab_deploy_token.argocd-dotnet-registry-readonly.token))}" }
-#         }
-#       }
-#     )
-#   }
-#   type     = "kubernetes.io/dockerconfigjson"
-#   provider = kubernetes.k8s-dev-rci
-# }
