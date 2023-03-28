@@ -4,7 +4,7 @@ module "init-namespaces-quantalys-customer-dev" {
   project = {
     name = "quantalys"
   }
-  namespace = "quantalys-*"
+  namespace = "quantalys-customer"
   app = {
     name            = "init-namespaces-quantalys.customer"
     path            = "quantalys.customer/init-namespace"
@@ -42,7 +42,7 @@ module "init-namespaces-quantalys-customer-rci" {
   project = {
     name = "quantalys"
   }
-  namespace = "quantalys-*"
+  namespace = "quantalys-customer"
   app = {
     name            = "init-namespaces-quantalys.customer"
     path            = "quantalys.customer/init-namespace"
