@@ -1,0 +1,25 @@
+[ -f /workspaces/*/.devcontainer/.zsh_functions.zsh ] && source /workspaces/*/.devcontainer/.zsh_functions.zsh
+
+export PATH="${PATH}:${HOME}/.krew/bin"
+
+alias ks=kubectl
+echo 'complete -o default -F __start_kubectl ks' >> ~/.zshrc
+
+source <(kubectl completion zsh)
+
+if alias tf >/dev/null 2>&1; then 
+    unalias tf
+fi
+
+function tf() {
+    if [ "$1" = "plan" ]; then
+        shift
+        command terraform plan -lock=false "$@"
+    else
+        command terraform "$@"
+    fi
+}
+
+function argocd() {
+    command argocd "$@" --config ~/.argocd/config
+}
