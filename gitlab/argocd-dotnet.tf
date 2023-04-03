@@ -9,7 +9,7 @@ module "argocd-dotnet-argocd-read" {
   argocd_hosts = var.argocd_hosts
 }
 
-## AzureDevops git push (commit new versoin)
+## AzureDevops git push (commit new version)
 resource "gitlab_project_access_token" "argocd-dotnet-argocd-token-cd-push" {
   project = data.gitlab_project.argocd-dotnet.id
   name    = format("REPO_%s-write", data.gitlab_project.argocd-dotnet.path)
