@@ -1,0 +1,3 @@
+variable "realm" {
+  type = string
+}
