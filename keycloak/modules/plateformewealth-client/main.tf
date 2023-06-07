@@ -20,22 +20,12 @@ resource "keycloak_openid_client" "plateformewealth-hub-subscription" {
   access_type = "CONFIDENTIAL"
 
 }
-# data "keycloak_openid_client" "plateformewealth-hub-subscription" {
-#   realm_id  = data.keycloak_realm.realm.id
-#   client_id = "plateformewealth-hub-subscription"
-# }
 
 resource "keycloak_role" "query-subscription" {
   realm_id  = data.keycloak_realm.realm.id
   client_id = keycloak_openid_client.plateformewealth-hub-subscription.id
   name      = "query-subscription"
 }
-
-# data "keycloak_role" "query-subscription" {
-#   realm_id  = data.keycloak_realm.realm.id
-#   client_id = data.keycloak_openid_client.plateformewealth-hub-subscription.id
-#   name      = "query-subscription"
-# }
 
 resource "keycloak_openid_client_service_account_role" "query-subscription" {
   realm_id  = data.keycloak_realm.realm.id
