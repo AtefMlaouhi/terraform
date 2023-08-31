@@ -8,14 +8,6 @@ variable "argocd_hosts" {
   })
 }
 
-# variable "terraform_dev" {
-#   type = object({
-#     project_token = optional(string)
-#     app_token     = string
-#   })
-#   sensitive = true
-# }
-
 variable "rancher_clusterids" {
   type = object({
     dev       = string
@@ -33,35 +25,13 @@ variable "rancher_projects" {
       prod_flex = string
     })
     quantalys = object({
-      dev_rci = string
+      dev     = string
+      rci     = string
       preprod = string
       prod    = string
     })
-    o2sm = object({
-      dev       = string
-      dev_flex  = string
-      preprod   = string
-      prod      = string
-      prod_flex = string
-    })
   })
 }
-
-# variable "terraform_preprod" {
-#   type = object({
-#     project_token = optional(string)
-#     app_token = string
-#   })
-#   sensitive = true
-# }
-
-# variable "terraform_prod" {
-#   type = object({
-#     project_token = optional(string)
-#     app_token = string
-#   })
-#   sensitive = true
-# }
 
 variable "argo_notification_teams" {
   type = map(string)

@@ -31,7 +31,8 @@ rancher_projects = {
     prod_flex = "p-n4bkz"
   }
   quantalys = {
-    dev_rci = "p-99g6k"
+    dev     = "p-99g6k"
+    rci     = "p-99g6k"
     preprod = "NA"
     prod    = "NA"
   }

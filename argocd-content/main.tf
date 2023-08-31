@@ -14,7 +14,14 @@ terraform {
 
 provider "argocd" {
   server_addr      = var.argocd_hosts.dev
-  alias            = "dev_rci"
+  alias            = "dev"
+  use_local_config = true
+  context          = var.argocd_hosts.dev
+}
+
+provider "argocd" {
+  server_addr      = var.argocd_hosts.dev
+  alias            = "rci"
   use_local_config = true
   context          = var.argocd_hosts.dev
 }
