@@ -40,3 +40,19 @@ module "axa-init-namespaces-dev_rci" {
     argocd.app     = argocd.dev
   }
 }
+
+resource "kubernetes_secret_v1" "connection-strings" {
+  metadata {
+    name      = "connection-strings"
+    namespace = "axa-quantalys-policy-act-dev"
+  }
+
+  data = {
+    postegresql-policy-act-axa              = "Server=policy-act-db-hl;Port=5432;Username=svc_policy_act;Password=WPntyea1G1;Database=policy_acts"
+    postegresql-policy-act-policyholder-axa = "Server=policy-act-policyholder-db-hl;Port=5432;Username=svc_policy_act_policyholder;Password=DmS9Laqg;Database=policy_act_policyholders"
+    sqlserver-quanta-core-axa               = "User Id=SVC_USER_PROXY;Password=pROfm1kLJs!IG9UzcRWdW;TrustServerCertificate=True;data source=WIN-MTPCEMI4AFD.hvsgrp.fr;initial catalog=dev-quantacore-aws;Timeout=30;MultipleActiveResultSets=True"
+    sqlserver-quanta-synonyms-axa           = "User Id=SVC_INVESTMENT_PROXY;Password=aqwMYPZwbp!gPUnEaW0H;TrustServerCertificate=True;data source=WIN-MTPCEMI4AFD.hvsgrp.fr;initial catalog=QuantaSynonyms;Timeout=30;MultipleActiveResultSets=True"
+  }
+
+  provider = kubernetes.k8s-dev-rci
+}

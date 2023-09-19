@@ -61,3 +61,9 @@ data "terraform_remote_state" "gitlab" {
     address = "https://git.harvest.fr/api/v4/projects/${var.project_id}/terraform/state/gitlab"
   }
 }
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "k8s-dev-rci"
+  alias          = "k8s-dev-rci"
+}
