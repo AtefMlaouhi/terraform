@@ -16,7 +16,7 @@ Pour éviter d'installer tout le tooling, une image docker est disponible pour �
 * Avoir WSL2 installé ([doc](https://docs.microsoft.com/fr-fr/windows/wsl/install))
 * Avoir vscode installé
 * Avoir l'extension `Remote - Containers` installée
-* Etre connecté au registry docker (`docker login #email harvest#`)
+* Etre connecté au registry docker (`docker login registry-git.harvest.fr`)
 * Ouvrir le répertoire ce répertoire dans vscode & ouvrir le répertoire dans le container (par la notif qui devrait apparaitre)
 
 ## Gitlab
