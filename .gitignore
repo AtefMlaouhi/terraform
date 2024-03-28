@@ -5,8 +5,7 @@
 
 *.backup
 *.tfstate
-*.auto.tfvars
 atlantis.yaml
 *local*
-**/.envrc
 test-*/
+**/.envrc.dont-commit
