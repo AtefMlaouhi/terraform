@@ -9,6 +9,11 @@ provider "kubernetes" {
   alias          = "k8s-dev-rci"
 }
 
+provider "azuredevops" {
+  org_service_url       = "https://devops.quantalys.com/Quanta"
+  personal_access_token = var.azuredevops_token
+}
+
 terraform {
   backend "http" {
   }

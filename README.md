@@ -29,7 +29,7 @@ export GITLAB_USERNAME=       # Votre id gitlab (ex: vdeoliveira)
 export GITLAB_TOKEN=          # Un Personal Access Tokens avec le scope `api`
 export PROJECT_ID=            # L'ID de ce projet (différent du projet sur lequel nous appliquerons les configurations)
 ```
-Le PROJECT_ID servira a définir dans quel projet sera stocké le fichier d'état de Terraform (dans la section Infrastructure/Terraform du projet, ex: https://git.harvest.fr/O2S/o2s-modularisation/fr.harvest.geocoding/-/terraform)
+Le PROJECT_ID servira a définir dans quel projet sera stocké le fichier d'état de Terraform (dans la section Infrastructure/Terraform du projet, ex: git::ssh://git@git.harvest.fr:10022/O2S/o2s-modularisation/fr.harvest.geocoding/-/terraform)
 
 ### Configurer un nouveau projet gitlab
 - créer le repository dans gitlab et noter son id
@@ -83,6 +83,7 @@ argocd login argocd.harvest.fr --sso --grpc-web
 argocd login argocd.flex-dev.harvest.fr --sso --grpc-web
 argocd login argocd.flex-preprod.harvest.fr --sso --grpc-web
 argocd login argocd-tooling-flex.harvest.fr --sso --grpc-web
+argocd login argocd-recette.quantalys.com --sso --grpc-web --skip-test-tls
 argocd login argocd-flex.harvest.fr --sso --grpc-web --skip-test-tls
 ```
 
@@ -124,7 +125,7 @@ module "argocd-application-geocoding-api" {
   }
   repository = {
     create   = true
-    url      = "https://git.harvest.fr/O2S/o2s-modularisation/fr.harvest.geocoding.git" # If the repository already exists in ArgoCD, you can omit create/username/password fields
+    url      = "git::ssh://git@git.harvest.fr:10022/O2S/o2s-modularisation/fr.harvest.geocoding.git" # If the repository already exists in ArgoCD, you can omit create/username/password fields
     username = module.gitlab-project-geocoding.read_token.login
     password = module.gitlab-project-geocoding.read_token.value
   }

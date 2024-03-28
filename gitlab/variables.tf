@@ -1,6 +1,12 @@
 variable "gitlab_token" {
   type        = string
   description = "Token who has access to create repository token."
+  sensitive   = true
+}
+
+variable "azuredevops_token" {
+  type      = string
+  sensitive = true
 }
 
 variable "argocd_hosts" {

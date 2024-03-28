@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.224.2/containers/ubuntu
 {
 	"name": "Ubuntu",
-	"image": "registry-git.harvest.fr/o2s/o2s-modularisation/templates/terraform-argocd-gitlab/devcontainer-prebuilt:22.04-1.0.8",
+	"image": "registry-git.harvest.fr/o2s/o2s-modularisation/templates/terraform-argocd-gitlab/devcontainer-prebuilt:22.04-1.0.9",
 
 	// "build": {
 	// 	"dockerfile": "Dockerfile",
@@ -38,23 +38,14 @@
 	},
 
 	"mounts": [
-		"source=devcontainer-argocd-gitlab-bashhistory,target=/commandhistory,type=volume", // keep bash history between container restart
-		"source=devcontainer-argocd-gitlab-direnv,target=/home/vscode/.local/share/direnv,type=volume", // keep direnv approval between container restart
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,consistency=cached",
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-		"source=devcontainer-argocd-gitlab-rancher,target=/home/vscode/.rancher,type=volume", // keep rancher cli token between container restart
-		"source=devcontainer-argocd-gitlab-argocd,target=/home/vscode/.argocd,type=volume"
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		8085 // For argocd auth callback on localhost:8085
 	],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
-	"postCreateCommand": "pre-commit autoupdate && pre-commit install -f --hook-type pre-commit",
-	"postStartCommand": "sudo chmod 755 /home/vscode/.ssh/config || true",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"

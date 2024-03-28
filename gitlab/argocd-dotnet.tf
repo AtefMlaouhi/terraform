@@ -4,16 +4,18 @@ data "gitlab_project" "argocd-dotnet" {
 
 ## ArgoCD read token
 module "argocd-dotnet-argocd-read" {
-  source       = "git::ssh://git@git.harvest.fr:10022/O2S/o2s-modularisation/templates/terraform-argocd-gitlab.git//modules/gitlab-link-to-argocd?ref=main"
-  project_id   = data.gitlab_project.argocd-dotnet.id
-  argocd_hosts = var.argocd_hosts
+  source          = "git::ssh://git@git.harvest.fr:10022/O2S/o2s-modularisation/templates/terraform-argocd-gitlab.git//modules/gitlab-link-to-argocd?ref=gitlab-16.6.0"
+  project_id      = data.gitlab_project.argocd-dotnet.id
+  argocd_hosts    = var.argocd_hosts
+  token_expire_at = "2024-10-29"
 }
 
 ## AzureDevops git push (commit new version)
 resource "gitlab_project_access_token" "argocd-dotnet-argocd-token-cd-push" {
-  project = data.gitlab_project.argocd-dotnet.id
-  name    = format("REPO_%s-write", data.gitlab_project.argocd-dotnet.path)
-  scopes  = ["api", "write_repository"]
+  project    = data.gitlab_project.argocd-dotnet.id
+  name       = format("REPO_%s-write", data.gitlab_project.argocd-dotnet.path)
+  scopes     = ["api", "write_repository"]
+  expires_at = "2024-10-29"
 }
 
 ## AzureDevops docker push
