@@ -12,7 +12,7 @@ data "azuredevops_project" "consolereglementaire" {
 # create the connection between gitlab <-> ConsoleReglementaire project
 resource "azuredevops_serviceendpoint_dockerregistry" "docker-gitlab-consolereglementaire" {
   project_id            = data.azuredevops_project.consolereglementaire.id
-  service_endpoint_name = "Gitlab Quantalys registry"
+  service_endpoint_name = "GitlabDockerRegistryQuantalys"
   docker_registry       = "https://registry-git.harvest.fr/"
   docker_username       = gitlab_deploy_token.consolereglementaire-argocd-dotnet-registry.username
   docker_password       = gitlab_deploy_token.consolereglementaire-argocd-dotnet-registry.token
