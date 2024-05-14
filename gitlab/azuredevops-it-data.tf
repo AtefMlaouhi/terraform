@@ -12,7 +12,7 @@ data "azuredevops_project" "it-data" {
 # create the connection between gitlab <-> it-data project
 resource "azuredevops_serviceendpoint_dockerregistry" "docker-gitlab" {
   project_id            = data.azuredevops_project.it-data.id
-  service_endpoint_name = "Gitlab Quantalys registry"
+  service_endpoint_name = "GitlabDockerRegistryQuantalys"
   docker_registry       = "https://registry-git.harvest.fr/"
   docker_username       = gitlab_deploy_token.it-data-argocd-dotnet-registry.username
   docker_password       = gitlab_deploy_token.it-data-argocd-dotnet-registry.token
