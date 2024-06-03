@@ -28,7 +28,7 @@ resource "azuredevops_resource_authorization" "docker-gitlab" {
 }
 
 # create the connection between gitlab semanticrelease <-> azuredevops project
-resource "azuredevops_serviceendpoint_dockerregistry" "docker-gitlab-semanticrelease-consolereglementaire" {
+resource "azuredevops_serviceendpoint_dockerregistry" "docker-gitlab-semanticrelease" {
   project_id            = data.azuredevops_project.project.id
   service_endpoint_name = "GitlabDockerRegistrySemanticRelease"
   docker_registry       = "https://registry-git.harvest.fr/"
@@ -38,8 +38,8 @@ resource "azuredevops_serviceendpoint_dockerregistry" "docker-gitlab-semanticrel
 }
 
 # # authorize the project azuredevops to use the connection semanticrelease
-resource "azuredevops_resource_authorization" "docker-gitlab-semanticrelease-consolereglementaire" {
+resource "azuredevops_resource_authorization" "docker-gitlab-semanticrelease" {
   project_id  = data.azuredevops_project.project.id
-  resource_id = azuredevops_serviceendpoint_dockerregistry.docker-gitlab-semanticrelease-consolereglementaire.id
+  resource_id = azuredevops_serviceendpoint_dockerregistry.docker-gitlab-semanticrelease.id
   authorized  = true
 }
