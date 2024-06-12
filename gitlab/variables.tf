@@ -25,3 +25,7 @@ variable "atlantis_host" {
 variable "webhook_O2SM_gitlab" {
   type = string
 }
+
+variable "dependencyTrackApiKey" {
+  sensitive = true
+}
