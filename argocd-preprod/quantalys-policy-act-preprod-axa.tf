@@ -45,7 +45,7 @@ resource "kubernetes_config_map_v1" "policy-act-axa-preprod-configmap-api-routes
     hub-subscription-api                  = "https://hub-subscription-api-preprod.harvest.fr"
     hub-product-api                       = "https://hub-product-api-preprod.harvest.fr"
     quantalys-api-management-api-external = "https://quantalys-gateway-api-preprod.harvest.fr"
-    quantalys-financial-document-api      = "http://financial-document-api.datafinance-rcc.svc.cluster.local"
+    quantalys-financial-document-api      = "http://financial-document-api.datafinance-preprod.svc.cluster.local"
     quantalys-investment-proxy-api        = "http://investment-proxy-api.policy-act-axa-preprod.svc.cluster.local"
     quantalys-policy-act-api              = "http://policy-act-api.policy-act-axa-preprod.svc.cluster.local"
     quantalys-policy-act-bff-api          = "http://policy-act-bff-api.policy-act-axa-preprod.svc.cluster.local"
