@@ -45,6 +45,7 @@ resource "kubernetes_config_map_v1" "policy-act-axa-rcc-configmap-api-routes" {
     hub-subscription-api                  = "http://hub-subscription-api.wealthplateform-hub-subscription-rcc.svc.cluster.local"
     hub-product-api                       = "http://api-product.wealthplateform-api-products-rcc.svc.cluster.local"
     quantalys-api-management-api-external = "https://quantalys-gateway-api-recette.harvest.fr"
+    quantalys-financial-document-api      = "http://financial-document-api.datafinance-rcc.svc.cluster.local"
     quantalys-investment-proxy-api        = "http://investment-proxy-api.policy-act-axa-rcc.svc.cluster.local"
     quantalys-policy-act-api              = "http://policy-act-api.policy-act-axa-rcc.svc.cluster.local"
     quantalys-policy-act-bff-api          = "http://policy-act-bff-api.policy-act-axa-rcc.svc.cluster.local"
@@ -119,8 +120,8 @@ resource "kubernetes_secret_v1" "policy-act-axa-rcc-secret-bucket" {
   data = {
     root-user     = ""
     root-password = ""
-    access-key    = "KRY9Z5VEYFOVOXYJAD2P"
-    secret-key    = "vITFrsyXecSmIGZS8jhoyHyFsl3uiZp1K2o7op1t"
+    access-key    = "DHA9XTQPQN4NQF13DQGV"
+    secret-key    = "JnDUENY23bwmSiIUmvo34vpVTZIaPn3ClC7NT9tY"
   }
 
   provider = kubernetes.flex-pw-rcc
@@ -135,6 +136,7 @@ resource "kubernetes_secret_v1" "policy-act-axa-rcc-secret-keycloak" {
   data = {
     client-esign-api                             = "chfsdMDo87kWKBWAimJ1QsDVAVYZO5dS"
     client-hub-subscription-api                  = "1EjJ3tFP6OHwuXjIlpN5CfEpC3TzsYlD"
+    client-financial-document-api                = "e3bwmKNrEu8UfPZGoZB34Q0nCDuqIILB"
     client-quantalys-investment-proxy-api        = "Ffga3BUmQUndDZ81t82FE58e9ChO3h4H"
     client-quantalys-policy-act-backend-api      = "KWv0Ko7Sgk05kTytqruhz78V21aXkv4K"
     client-quantalys-policy-act-api              = "0oxNTKyORDO9cqQ1j1wSzdhMswudYguU"
@@ -323,40 +325,6 @@ module "policy-act-axa-rcc-quantalys-policy-act-api" {
   }
 }
 
-/*
-module "policy-act-axa-rcc-quantalys-policy-frontend-web" {
-  source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
-  project = {
-    name = "policyact"
-  }
-  namespace = "policy-act-axa"
-  depends_on = [
-    module.policy-act-axa-rcc-init-namespace
-  ]
-  app = {
-    name = "quantalys-policy-act-frontend-axa-web"
-    path = "quantalys-policy-act/quantalys-policy-act-frontend-web"
-  }
-  env = {
-    envs = [
-      {
-        name                  = "rcc"
-        force_enable_autosync = false
-        values_files          = ["values.yaml", "values-rcc.yaml", "values-rcc-axa.yaml"]
-      }
-    ]
-    autosync_except_prod = false
-  }
-  repository = {
-    url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
-  }
-  providers = {
-    argocd.project = argocd.rcc_pw-flex
-    argocd.app     = argocd.rcc_pw-flex
-  }
-}
-*/
-
 module "policy-act-axa-rcc-quantalys-policy-frontend-shell" {
   source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
   project = {
@@ -433,6 +401,38 @@ module "policy-act-axa-rcc-quantalys-policy-frontend-topup-mfe" {
   app = {
     name = "quantalys-policy-act-frontend-mfe-topup-axa"
     path = "quantalys-policy-act/quantalys-policy-act-frontend-mfe-topup"
+  }
+  env = {
+    envs = [
+      {
+        name                  = "rcc"
+        force_enable_autosync = false
+        values_files          = ["values.yaml", "values-rcc.yaml", "values-rcc-axa.yaml"]
+      }
+    ]
+    autosync_except_prod = false
+  }
+  repository = {
+    url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
+  }
+  providers = {
+    argocd.project = argocd.rcc_pw-flex
+    argocd.app     = argocd.rcc_pw-flex
+  }
+}
+
+module "policy-act-axa-rcc-quantalys-policy-frontend-surrender-mfe" {
+  source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
+  project = {
+    name = "policyact"
+  }
+  namespace = "policy-act-axa"
+  depends_on = [
+    module.policy-act-axa-rcc-init-namespace
+  ]
+  app = {
+    name = "quantalys-policy-act-frontend-mfe-surrender-axa"
+    path = "quantalys-policy-act/quantalys-policy-act-frontend-mfe-surrender"
   }
   env = {
     envs = [
