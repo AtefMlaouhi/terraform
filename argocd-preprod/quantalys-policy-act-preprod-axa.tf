@@ -64,8 +64,8 @@ resource "kubernetes_config_map_v1" "policy-act-axa-preprod-configmap-instrument
   }
 
   data = {
-    opentelemetry-collector-host = "opentelemetry.flex-preprod.harvest.fr"
     opentelemetry-collector-uri  = "http://opentelemetry-collector.observability.svc.cluster.local:4317"
+    opentelemetry-collector-host = "opentelemetry.flex-preprod.harvest.fr"
     protocol                     = "Grpc"
     flag-export-metrics          = "true"
   }
