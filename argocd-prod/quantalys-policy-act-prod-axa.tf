@@ -45,6 +45,7 @@ resource "kubernetes_config_map_v1" "policy-act-axa-prod-configmap-api-routes" {
     hub-subscription-api                  = "https://hub-subscription-api.harvest.fr"
     hub-product-api                       = "https://hub-product-api.harvest.fr"
     quantalys-api-management-api-external = "https://quantalys-gateway-api.harvest.fr"
+    quantalys-financial-document-api      = "http://financial-document-api.datafinance-prod.svc.cluster.local"
     quantalys-investment-proxy-api        = "http://investment-proxy-api.policy-act-axa-prod.svc.cluster.local"
     quantalys-policy-act-api              = "http://policy-act-api.policy-act-axa-prod.svc.cluster.local"
     quantalys-policy-act-bff-api          = "http://policy-act-bff-api.policy-act-axa-prod.svc.cluster.local"
@@ -66,7 +67,7 @@ resource "kubernetes_config_map_v1" "policy-act-axa-prod-configmap-instrumentati
     opentelemetry-collector-uri  = "http://opentelemetry-collector.observability.svc.cluster.local:4317"
     opentelemetry-collector-host = "opentelemetry-flex.harvest.fr"
     protocol                     = "Grpc"
-    flag-export-metrics          = "True"
+    flag-export-metrics          = "true"
   }
 
   provider = kubernetes.flex-pw-prod
@@ -102,6 +103,7 @@ resource "kubernetes_secret_v1" "policy-act-axa-prod-secret-keycloak" {
   data = {
     client-esign-api                             = "xaby6GXGQD9GDPamTuyl84c6npebicgS"
     client-hub-subscription-api                  = "0Ps7lfWayJdcYvasBL2rT3gp7JTA7LrF"
+    client-financial-document-api                = "rH7wZZkJcYCsYhMw9dU8F07BOfznU2z8"
     client-quantalys-investment-proxy-api        = "3dRe8N8pNVLi5SAYVrf1i8uyOglSFcuF"
     client-quantalys-policy-act-api              = "7C9DlOUOOWIKy1JPYgFxm8ZjQxYY8Ki0"
     client-quantalys-policy-act-backend-api      = "7ddP8g46QGz9NYhbosCZctndpMj52HAV"
@@ -119,10 +121,10 @@ module "policy-act-axa-prod-quantalys-investment-proxy-api" {
   }
   namespace = "policy-act-axa"
   depends_on = [
-    module.policy-act-cnp-prod-init-namespace,
-    kubernetes_config_map_v1.policy-act-cnp-prod-configmap-instrumentation,
-    kubernetes_config_map_v1.policy-act-cnp-prod-configmap-keycloak,
-    kubernetes_secret_v1.policy-act-cnp-prod-secret-keycloak
+    module.policy-act-axa-prod-init-namespace,
+    kubernetes_config_map_v1.policy-act-axa-prod-configmap-instrumentation,
+    kubernetes_config_map_v1.policy-act-axa-prod-configmap-keycloak,
+    kubernetes_secret_v1.policy-act-axa-prod-secret-keycloak
   ]
   app = {
     name = "quantalys-investment-proxy-axa-api"
@@ -136,6 +138,7 @@ module "policy-act-axa-prod-quantalys-investment-proxy-api" {
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
@@ -153,10 +156,10 @@ module "policy-act-axa-prod-quantalys-user-proxy-api" {
   }
   namespace = "policy-act-axa"
   depends_on = [
-    module.policy-act-cnp-prod-init-namespace,
-    kubernetes_config_map_v1.policy-act-cnp-prod-configmap-instrumentation,
-    kubernetes_config_map_v1.policy-act-cnp-prod-configmap-keycloak,
-    kubernetes_secret_v1.policy-act-cnp-prod-secret-keycloak
+    module.policy-act-axa-prod-init-namespace,
+    kubernetes_config_map_v1.policy-act-axa-prod-configmap-instrumentation,
+    kubernetes_config_map_v1.policy-act-axa-prod-configmap-keycloak,
+    kubernetes_secret_v1.policy-act-axa-prod-secret-keycloak
   ]
   app = {
     name = "quantalys-user-proxy-axa-api"
@@ -170,6 +173,7 @@ module "policy-act-axa-prod-quantalys-user-proxy-api" {
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
@@ -205,6 +209,7 @@ module "policy-act-axa-prod-quantalys-policy-act-policyholder-api" {
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
@@ -240,6 +245,7 @@ module "policy-act-axa-prod-quantalys-policy-act-bff-api" {
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
@@ -285,38 +291,6 @@ module "policy-act-axa-prod-quantalys-policy-act-api" {
   }
 }
 
-module "policy-act-axa-prod-quantalys-policy-frontend-web" {
-  source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
-  project = {
-    name = "policyact"
-  }
-  namespace = "policy-act-axa"
-  depends_on = [
-    module.policy-act-axa-prod-init-namespace
-  ]
-  app = {
-    name = "quantalys-policy-act-frontend-axa-web"
-    path = "quantalys-policy-act/quantalys-policy-act-frontend-web"
-  }
-  env = {
-    envs = [
-      {
-        name                  = "prod"
-        force_enable_autosync = false
-        values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
-      }
-    ]
-  }
-  repository = {
-    url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
-  }
-  providers = {
-    argocd.project = argocd.prod_pw-flex
-    argocd.app     = argocd.prod_pw-flex
-  }
-}
-
-/*
 module "policy-act-axa-prod-quantalys-policy-frontend-shell" {
   source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
   project = {
@@ -334,11 +308,11 @@ module "policy-act-axa-prod-quantalys-policy-frontend-shell" {
     envs = [
       {
         name                  = "prod"
-        force_enable_autosync = true
+        force_enable_autosync = false
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
-    autosync_except_prod = true
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
@@ -348,7 +322,6 @@ module "policy-act-axa-prod-quantalys-policy-frontend-shell" {
     argocd.app     = argocd.prod_pw-flex
   }
 }
-*/
 
 module "policy-act-axa-prod-quantalys-policy-frontend-shift-mfe" {
   source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
@@ -371,6 +344,7 @@ module "policy-act-axa-prod-quantalys-policy-frontend-shift-mfe" {
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
@@ -402,6 +376,7 @@ module "policy-act-axa-prod-quantalys-policy-frontend-topup-mfe" {
         values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
       }
     ]
+    autosync_except_prod = false
   }
   repository = {
     url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
