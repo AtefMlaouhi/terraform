@@ -72,7 +72,7 @@ resource "kubernetes_secret_v1" "underwriting-axa-dev-secret-connection-strings"
   }
 
   data = {
-    sqlserver-quanta-core-axa = "User Id=SVC_USER_PROXY;Password=pROfm1kLJs!IG9UzcRWdW;TrustServerCertificate=True;data source=WIN-MTPCEMI4AFD.hvsgrp.fr;initial catalog=dev-quantacore-aws;Timeout=30;MultipleActiveResultSets=True"
+    sqlserver-quanta-core-axa = "User Id=SVC_UNDERWRITE;Password=EL3lharjm!ucad3qZ;TrustServerCertificate=True;data source=WIN-MTPCEMI4AFD.hvsgrp.fr;initial catalog=dev-quantacore-aws;Timeout=30"
   }
 
   provider = kubernetes.k8s-dev-rci
