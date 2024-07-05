@@ -131,7 +131,7 @@ resource "kubernetes_secret_v1" "policy-act-axa-rci-secret-keycloak" {
 
   data = {
     client-esign-api                             = "4weifogQ7tfUsnrTFQowsI8YEGyIhYaD"
-    client-financial-document-api                = "to_be_defined"
+    client-financial-document-api                = "qqmIp8qQsry9SS6Zv5SrboLca8ocslB0"
     client-hub-subscription-api                  = "HmLpDKsgOjaxnDbH5aNpzf0sptIdoScC"
     client-quantalys-investment-proxy-api        = "q9P1Q2go0fLB2yAia6ZYwR6uLS9ZlCC9"
     client-quantalys-policy-act-backend-api      = "7toNttNB7ijrxjUfF2Csbv0wn6fxFUwO"
@@ -325,42 +325,6 @@ module "policy-act-axa-rci-quantalys-policy-act-api" {
   }
 }
 
-/*
-module "policy-act-axa-rci-quantalys-policy-act-frontend-web" {
-  source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=main"
-  project = {
-    name = "quantalys"
-  }
-  namespace = "quantalys-policy-act-axa"
-  depends_on = [
-    module.policy-act-axa-rci-init-namespace,
-    kubernetes_config_map_v1.policy-act-axa-rci-configmap-keycloak,
-    kubernetes_config_map_v1.policy-act-axa-rci-configmap-api-routes
-  ]
-  app = {
-    name = "quantalys-policy-act-frontend-web"
-    path = "quantalys-policy-act/quantalys-policy-act-frontend-web"
-  }
-  env = {
-    envs = [
-      {
-        name                  = "rci"
-        force_enable_autosync = true
-        values_files          = ["values.yaml", "values-rci.yaml", "values-rci-axa.yaml"]
-      }
-    ]
-    autosync_except_prod = true
-  }
-  repository = {
-    url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
-  }
-  providers = {
-    argocd.project = argocd.dev
-    argocd.app     = argocd.dev
-  }
-}
-*/
-
 module "policy-act-axa-rci-quantalys-policy-frontend-shell" {
   source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=main"
   project = {
@@ -439,6 +403,39 @@ module "policy-act-axa-rci-quantalys-policy-frontend-topup-mfe" {
   app = {
     name = "quantalys-policy-act-frontend-mfe-topup-axa"
     path = "quantalys-policy-act/quantalys-policy-act-frontend-mfe-topup"
+  }
+  env = {
+    envs = [
+      {
+        name                  = "rci"
+        force_enable_autosync = true
+        values_files          = ["values.yaml", "values-rci.yaml", "values-rci-axa.yaml"]
+      }
+    ]
+    autosync_except_prod = true
+  }
+  repository = {
+    url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
+  }
+  providers = {
+    argocd.project = argocd.dev
+    argocd.app     = argocd.dev
+  }
+}
+
+module "policy-act-axa-rci-quantalys-policy-frontend-surrender-mfe" {
+  source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=main"
+  project = {
+    name = "quantalys"
+  }
+  namespace = "quantalys-policy-act-axa"
+  depends_on = [
+    module.policy-act-axa-rci-init-namespace,
+    module.policy-act-axa-rci-quantalys-policy-frontend-shell
+  ]
+  app = {
+    name = "quantalys-policy-act-frontend-mfe-surrender-axa"
+    path = "quantalys-policy-act/quantalys-policy-act-frontend-mfe-surrender"
   }
   env = {
     envs = [
