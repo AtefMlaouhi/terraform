@@ -386,3 +386,35 @@ module "policy-act-axa-prod-quantalys-policy-frontend-topup-mfe" {
     argocd.app     = argocd.prod_pw-flex
   }
 }
+
+module "policy-act-axa-prod-quantalys-policy-frontend-surrender-mfe" {
+  source = "git::ssh://git@git.harvest.fr:10022/quantalys/cicd/terraform-argocd-gitlab.git//modules/argocd-project-app?ref=v5.3.0"
+  project = {
+    name = "policyact"
+  }
+  namespace = "policy-act-axa"
+  depends_on = [
+    module.policy-act-axa-prod-init-namespace
+  ]
+  app = {
+    name = "policy-act-frontend-mfe-surrender-axa"
+    path = "quantalys-policy-act/quantalys-policy-act-frontend-mfe-surrender"
+  }
+  env = {
+    envs = [
+      {
+        name                  = "prod"
+        force_enable_autosync = false
+        values_files          = ["values.yaml", "values-prod.yaml", "values-prod-axa.yaml"]
+      }
+    ]
+    autosync_except_prod = false
+  }
+  repository = {
+    url = "https://git.harvest.fr/quantalys/cicd/argocd-dotnet.git"
+  }
+  providers = {
+    argocd.project = argocd.prod_pw-flex
+    argocd.app     = argocd.prod_pw-flex
+  }
+}
